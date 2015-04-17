@@ -2604,6 +2604,12 @@
 			</object>
 
 			<object type="button">
+				<placement x="%col2_x%" y="%row4_y%" />
+				<text>LVM Partition</text>
+				<action function="page">lvm</action>
+			</object>
+
+			<object type="button">
 				<condition var1="tw_show_dumlock" var2="1" />
 				<placement x="%col2_x%" y="%row4_y%" />
 				<text>HTC Dumlock</text>
@@ -3496,6 +3502,70 @@
 					<action function="set">tw_has_cancel=1</action>
 					<action function="set">tw_show_reboot=1</action>
 					<action function="set">tw_cancel_action=adbsideloadcancel</action>
+					<action function="page">action_page</action>
+				</actions>
+			</object>
+
+			<object type="action">
+				<touch key="home" />
+				<action function="page">main</action>
+			</object>
+
+			<object type="action">
+				<touch key="back" />
+				<action function="page">advanced</action>
+			</object>
+
+			<object type="template" name="footer" />
+		</page>
+
+		<page name="lvm">
+			<object type="template" name="header" />
+
+			<object type="text">
+				<placement x="%center_x%" y="%row1_header_y%" placement="5"/>
+				<text>LVM Partition</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row2_text_y%" placement="5"/>
+				<text>Partition status:%tw_lvm_partition_state%</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row3_text_y%" placement="5"/>
+				<text>Partition switch:%tw_lvm_partition_type_text%</text>
+			</object>
+
+			<object type="button">
+				<placement x="%col_center_x%" y="%row2_y%" />
+				<text>Check partition</text>
+				<action function="checklvm"></action>
+			</object>
+
+			<object type="button">
+				<placement x="%col1_x%" y="%row3_y%" />
+				<text>Merge partition</text>
+				<action function="set">tw_lvm_partition_type=single</action>
+				<action function="set">tw_lvm_partition_type_text=Unified partition</action>
+			</object>
+
+			<object type="button">
+				<placement x="%col2_x%" y="%row3_y%" />
+				<text>Restore partition</text>
+				<action function="set">tw_lvm_partition_type=normal</action>
+				<action function="set">tw_lvm_partition_type_text=Non-unified partition</action>
+			</object>
+
+			<object type="slider">
+				<text>Swipe to switch partition</text>
+				<actions>
+					<action function="set">tw_back=advanced</action>
+					<action function="set">tw_action=partitionlvm</action>
+					<action function="set">tw_action_text1=Partitioning ...</action>
+					<action function="set">tw_action_text2=This will take a few minutes.</action>
+					<action function="set">tw_complete_text1=Partitioning Complete</action>
+					<action function="set">tw_show_reboot=1</action>
 					<action function="page">action_page</action>
 				</actions>
 			</object>

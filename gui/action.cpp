@@ -196,6 +196,7 @@ GUIAction::GUIAction(xml_node<>* node)
 		ADD_ACTION(startmtp);
 		ADD_ACTION(stopmtp);
 		ADD_ACTION(cancelbackup);
+		ADD_ACTION(checklvm);
 
 		// remember actions that run in the caller thread
 		for (mapFunc::const_iterator it = mf.begin(); it != mf.end(); ++it)
@@ -223,6 +224,7 @@ GUIAction::GUIAction(xml_node<>* node)
 		ADD_ACTION(repair);
 		ADD_ACTION(changefilesystem);
 		ADD_ACTION(flashimage);
+		ADD_ACTION(partitionlvm);
 	}
 
 	// First, get the action
@@ -1254,6 +1256,64 @@ int GUIAction::partitionsd(std::string arg)
 	operation_end(ret_val);
 	return 0;
 
+}
+
+int GUIAction::checklvm(std::string arg)
+{
+	string lvm_state;
+	if (TWFunc::Path_Exists("/dev/lvpool/userdata")) {
+   	   	 lvm_state = "Unified partition";
+	} else {
+   	  	  lvm_state = "Non-unified partition";
+	}
+	if (!lvm_state.empty()) {
+   		DataManager::SetValue("tw_lvm_partition_state",lvm_state);
+	}
+	return 0;
+}
+
+int GUIAction::partitionlvm(std::string arg)
+{
+	operation_start("Lvm partition");
+
+	if (simulate) {
+		simulate_progress_bar();
+	} else {
+		string lvm_change;
+		DataManager::GetValue("tw_lvm_partition_type", lvm_change);
+		if(lvm_change=="single") {
+			gui_print("Unmounting sdcard partitions\n");
+			PartitionManager.UnMount_By_Path("/data",false);
+			PartitionManager.UnMount_By_Path("/internal_sd",false);
+			PartitionManager.UnMount_By_Path("/sdcard",false);
+			gui_print("Creating LVM physical volumes\n");
+			TWFunc::Exec_Cmd("lvm pvcreate /dev/block/platform/msm_sdcc.1/by-name/userdata");
+			TWFunc::Exec_Cmd("lvm pvcreate /dev/block/platform/msm_sdcc.1/by-name/sdcard");
+			gui_print("Adding LVM physical volumes to volume group\n");
+			TWFunc::Exec_Cmd("lvm vgcreate lvpool /dev/block/platform/msm_sdcc.1/by-name/userdata /dev/block/platform/msm_sdcc.1/by-name/sdcard");
+			gui_print("Creating userdata logical volume\n");
+			TWFunc::Exec_Cmd("lvm lvcreate -l 100%FREE -n userdata lvpool");
+			gui_print("Rescanning and activating LVM volumes\n");
+			TWFunc::Exec_Cmd("lvm vgscan --mknodes --ignorelockingfailure");
+			TWFunc::Exec_Cmd("lvm vgchange -aly --ignorelockingfailure");
+			gui_print("Formatting LVM volume\n");
+			TWFunc::Exec_Cmd("make_ext4fs /dev/lvpool/userdata");
+			//TWFunc::Exec_Cmd("mke2fs -t ext4 -m 0 -L data /dev/lvpool/userdata");
+			//TWFunc::Exec_Cmd("tune2fs -c 0 -i -1 -C -1 /dev/lvpool/userdata");
+			gui_print("Enjoy LVM partitioning!\n");
+		} else if(lvm_change=="normal"){
+			gui_print("Unmounting data partition");
+			PartitionManager.UnMount_By_Path("/data",false);
+			TWFunc::Exec_Cmd("lvm lvremove -f lvpool");
+			gui_print("Formatting physical partitions back to ext4");
+			TWFunc::Exec_Cmd("make_ext4fs /dev/block/platform/msm_sdcc.1/by-name/userdata");
+			//TWFunc::Exec_Cmd("make_ext4fs /dev/block/platform/msm_sdcc.1/by-name/sdcard");
+			TWFunc::Exec_Cmd("mkdosfs -n sdcard -F 32 /dev/block/platform/msm_sdcc.1/by-name/sdcard");
+			gui_print("You now have standard partitioning!");
+		}
+	}
+	operation_end(0);
+	return 0;
 }
 
 int GUIAction::installhtcdumlock(std::string arg)
