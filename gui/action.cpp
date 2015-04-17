@@ -1262,9 +1262,9 @@ int GUIAction::checklvm(std::string arg)
 {
 	string lvm_state;
 	if (TWFunc::Path_Exists("/dev/lvpool/userdata")) {
-   	   	 lvm_state = "Unified partition";
+   	   	 lvm_state = "单分区";
 	} else {
-   	  	  lvm_state = "Non-unified partition";
+   	  	  lvm_state = "双分区";
 	}
 	if (!lvm_state.empty()) {
    		DataManager::SetValue("tw_lvm_partition_state",lvm_state);
