@@ -666,5 +666,21 @@
 		<string name="change_fs_err">修改文件系统时发生错误.</string>
 		<string name="theme_ver_err">自定义主题不兼容 TWRP 版本.请使用官方主题.</string>
 		<string name="up_a_level">(上级目录)</string>
+		<string name="lvm_btn">LVM分区</string>
+		<string name="lvm_hdr">LVM分区</string>
+		<string name="lvm_state_lvm">分区状态: 单分区</string>
+		<string name="lvm_state_std">分区状态: 双分区</string>
+		<string name="lvm_change">切换分区: </string>
+		<string name="lvm_change_lvm">单分区</string>
+		<string name="lvm_change_std">双分区</string>
+		<string name="lvm_btn_check">检测分区</string>
+		<string name="lvm_btn_lvm">合并分区</string>
+		<string name="lvm_btn_std">还原分区</string>
+		<string name="lvm_note1">操作前请刷入支持LVM的ROM!</string>
+		<string name="lvm_note2">此项操作将会清除您的所有数据!</string>
+		<string name="lvm_note3">按返回取消.</string>
+		<string name="swipe_to_lvm">滑动按钮切换</string>
+		<string name="lvming">正在切换分区...</string>
+		<string name="lvm_complete">切换分区完成</string>
 	</resources>
 </language>

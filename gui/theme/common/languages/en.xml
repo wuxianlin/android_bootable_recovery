@@ -666,5 +666,21 @@
 		<string name="change_fs_err">Error changing file system.</string>
 		<string name="theme_ver_err">Custom theme version does not match TWRP version. Using stock theme.</string>
 		<string name="up_a_level">(Up A Level)</string>
+		<string name="lvm_btn">LVM partition</string>
+		<string name="lvm_hdr">LVM partition</string>
+		<string name="lvm_state_lvm">Partition:LVM</string>
+		<string name="lvm_state_std">Partition:Standard</string>
+		<string name="lvm_change">Change to:</string>
+		<string name="lvm_change_lvm">LVM</string>
+		<string name="lvm_change_std">Standard</string>
+		<string name="lvm_btn_check">Check partition</string>
+		<string name="lvm_btn_lvm">Merge partition</string>
+		<string name="lvm_btn_std">Restore partition</string>
+		<string name="lvm_note1">Please use rom that support lvm before this action!</string>
+		<string name="lvm_note2">This action will wipe all you data!</string>
+		<string name="lvm_note3">Press back to cancel</string>
+		<string name="swipe_to_lvm">Swipe to Change partition</string>
+		<string name="lvming">Changing partition...</string>
+		<string name="lvm_complete">Changed partition</string>
 	</resources>
 </language>

@@ -3209,6 +3209,13 @@
 			</button>
 
 			<button style="main_button">
+				<placement x="%center_x%" y="%row19_y%"/>
+				<text>{@lvm_btn=Lvm partition}</text>
+				<action function="checklvm"></action>
+				<action function="page">lvm</action>
+			</button>
+
+			<button style="main_button">
 				<condition var1="tw_show_dumlock" var2="1"/>
 				<placement x="%center_x%" y="%row19_y%"/>
 				<text>{@dumlock_btn=HTC Dumlock}</text>
@@ -4361,6 +4368,96 @@
 
 			<action>
 				<touch key="back"/>
+				<action function="page">advanced</action>
+			</action>
+		</page>
+
+		<page name="lvm">
+			<template name="page" />
+
+			<text style="text_l">
+				<placement x="%col1_x_header%" y="%row3_header_y%" />
+				<text>{@advanced_hdr=Advanced}</text>
+			</text>
+
+			<text style="text_m">
+				<placement x="%col1_x_header%" y="%row4_header_y%" />
+				<text>{@lvm_hdr=Lvm partition}</text>
+			</text>
+
+			<text style="text_m_accent">
+				<condition var1="tw_lvm_partition_state" op="=" var2="lvm" />
+				<placement x="%center_x%" y="%row2_y%" placement="5"/>
+				<text>{@lvm_state_lvm=Partition:Lvm}</text>
+			</text>
+
+			<text style="text_m_accent">
+				<condition var1="tw_lvm_partition_state" op="=" var2="std" />
+				<placement x="%center_x%" y="%row2_y%" placement="5" />
+				<text>{@lvm_state_std=Partition:Standard}</text>
+			</text>
+
+			<text style="text_m">
+				<placement x="%center_x%" y="%row3_y%" placement="5" />
+				<text>{@lvm_change=Change to:}%tw_lvm_partition_type_text%</text>
+			</text>
+
+			<text style="text_m_fail">
+				<placement x="%center_x%" y="%row5_y%" placement="5" />
+				<text>{@lvm_note1=Please use rom that support lvm before this action!}</text>
+			</text>
+
+			<text style="text_m_fail">
+				<placement x="%center_x%" y="%row6_y%" placement="5" />
+				<text>{@lvm_note2=This action will wipe all you data!}</text>
+			</text>
+
+			<text style="text_m">
+				<placement x="%center_x%" y="%row8_y%" placement="5" />
+				<text>{@lvm_note3=Press back to cancel}</text>
+			</text>
+
+			<button style="main_button_half_height">
+				<placement x="%indent%" y="%row15a_y%" />
+				<text>{@lvm_btn_check=Check partition}</text>
+				<action function="checklvm"></action>
+			</button>
+
+			<button style="main_button_half_height">
+				<placement x="%indent%" y="%row18a_y%" />
+				<text>{@lvm_btn_lvm=Merge partition}</text>
+				<action function="set">tw_lvm_partition_type=lvm</action>
+				<action function="set">tw_lvm_partition_type_text={@lvm_change_lvm=Lvm}</action>
+			</button>
+
+			<button style="main_button_half_height">
+				<placement x="%center_x%" y="%row18a_y%" />
+				<text>{@lvm_btn_std=Restore partition}</text>
+				<action function="set">tw_lvm_partition_type=std</action>
+				<action function="set">tw_lvm_partition_type_text={@lvm_change_std=Standard}</action>
+			</button>
+
+			<slider>
+				<text>{@swipe_to_lvm=Swipe to Change partition}</text>
+				<actions>
+					<action function="set">tw_back=advanced</action>
+					<action function="set">tw_action=partitionlvm</action>
+					<action function="set">tw_action_text1={@lvming=Changing partition}</action>
+					<action function="set">tw_action_text2=</action>
+					<action function="set">tw_complete_text1={@lvm_complete=Changed partition}</action>
+					<action function="set">tw_slider_text={@swipe_to_confirm=Swipe to Confirm}</action>
+					<action function="set">tw_show_reboot=1</action>
+					<action function="page">action_page</action>
+				</actions>
+			</slider>
+
+			<action>
+				<touch key="home" />
+				<action function="page">main</action>
+			</action>
+
+			<action>
+				<touch key="back" />
 				<action function="page">advanced</action>
 			</action>
 		</page>
